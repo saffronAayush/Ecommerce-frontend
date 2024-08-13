@@ -43,6 +43,17 @@ import ProductReviews from "./components/admin/ProductReviews.jsx";
 import About from "./components/layout/about/About.jsx";
 import Contact from "./components/layout/contact/Contact.jsx";
 import NotFound from "./components/layout/notFound/NotFound.jsx";
+import { useLocation } from "react-router-dom";
+
+const ScrollToTop = () => {
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
+    return null;
+};
 
 function App() {
     const dispatch = useDispatch();
@@ -53,9 +64,29 @@ function App() {
     const [apiAllow, setApiAllow] = useState(false);
 
     const getStripeApiKey = async () => {
-        const { data } = await axios.get("/api/v1/stripeapikey");
-        setSetstripeApiKey(data.stripeApiKey);
-        console.log(data.stripeApiKey);
+        try {
+            // Fetch the Stripe API key from the backend
+            const { data } = await axios.get(
+                "https://ecommerce-backend-for-fun.vercel.app/api/v1/stripeapikey"
+            );
+
+            // Set the Stripe API key to the state
+            setSetstripeApiKey(data.stripeApiKey);
+
+            // Log the Stripe API key (for debugging purposes)
+            console.log(data.stripeApiKey);
+        } catch (error) {
+            // Handle errors
+            console.error("Error fetching Stripe API key:", error);
+
+            // Optionally, you can set a default value or notify the user
+            setSetstripeApiKey(null);
+
+            // If you need to notify the user
+            // alert('Failed to fetch payment credentials. Please try again later.');
+
+            // Or handle the error in other ways as needed
+        }
     };
 
     useEffect(() => {
@@ -75,6 +106,7 @@ function App() {
     return (
         <>
             <Router>
+                <ScrollToTop />
                 <Header />
                 {isAuthenticated && <UserOptions user={LogedUser} />}
                 {stripeApiKey && (

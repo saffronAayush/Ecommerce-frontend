@@ -37,8 +37,8 @@ const LoginSignup = () => {
     //to get url formate of the default avatar image
 
     // const defaultAvatar = `https://api.multiavatar.com`;
-    const defaultAvatar1 = `https://source.boringavatars.com/beam/120/`;
-    const defaultAvatar2 = `?colors=264653,f4a261,e76f51`;
+    const defaultAvatar1 = `https://robohash.org/`;
+    const defaultAvatar2 = `-one`;
     // const defaultAvatar = `https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=`;
     const defaultAvatar = `https://source.boringavatars.com/bauhaus/120/hd?colors=264653,2a9d8f,e9c46a`;
 
@@ -173,6 +173,7 @@ const LoginSignup = () => {
                                         type="email"
                                         placeholder="Email"
                                         required
+                                        name="email"
                                         value={loginEmail}
                                         onChange={(e) =>
                                             setLoginEmail(e.target.value)
@@ -192,7 +193,7 @@ const LoginSignup = () => {
                                     />
                                 </div>
                                 <Link to="/password/forgot">
-                                    Forget Password ?
+                                    <p className="forgot">Forget Password ?</p>
                                 </Link>
                                 <input
                                     type="submit"
@@ -244,6 +245,7 @@ const LoginSignup = () => {
                                     <img
                                         src={avatarPreview}
                                         alt="Avatar Preview"
+                                        className="avatar"
                                     />
                                     <input
                                         type="file"

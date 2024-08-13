@@ -53,7 +53,11 @@ import {
     DELETE_REVIEW_RESET,
     DELETE_REVIEW_CLEAR_ERROR,
 } from "../slices/AdminReviewsSlice.js";
-// get product
+
+// Global Axios configuration
+axios.defaults.withCredentials = true; // Ensure cookies are sent with requests
+
+// Get all products
 export const GetProduct =
     (
         keyword = "",
@@ -66,17 +70,26 @@ export const GetProduct =
         try {
             dispatch(ALL_PRODUCT_REQUEST());
 
-            let link = `/api/v1/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`;
-            if (category.length)
-                link = `/api/v1/products?keyword=${keyword}&category=${category}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`;
-            const { data } = await axios.get(link);
+            let link = `https://ecommerce-backend-for-fun.vercel.app/api/v1/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`;
+
+            if (category.length) {
+                link = `https://ecommerce-backend-for-fun.vercel.app/api/v1/products?keyword=${keyword}&category=${category}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`;
+            }
+
+            const { data } = await axios.get(link, {
+                withCredentials: true,
+            });
             dispatch(ALL_PRODUCT_SUCCESS(data));
         } catch (error) {
-            dispatch(ALL_PRODUCT_FAIL(error.response.data.message));
+            dispatch(
+                ALL_PRODUCT_FAIL(
+                    error.response?.data?.message || "Failed to fetch products"
+                )
+            );
         }
     };
 
-// get a product detail
+// Get a product detail
 export const GetProductDetails = (id) => async (dispatch) => {
     try {
         dispatch(PRODUCT_DETAILS_REQUEST());
@@ -85,27 +98,40 @@ export const GetProductDetails = (id) => async (dispatch) => {
                 "Content-Type": "application/json",
             },
         };
-        const { data } = await axios.get(`/api/v1/product/${id}`);
+        const { data } = await axios.get(
+            `https://ecommerce-backend-for-fun.vercel.app/api/v1/product/${id}`
+        );
 
         dispatch(PRODUCT_DETAILS_SUCCESS(data.product));
     } catch (error) {
-        dispatch(PRODUCT_DETAILS_FAIL(error.response.data.message));
+        dispatch(
+            PRODUCT_DETAILS_FAIL(
+                error.response?.data?.message ||
+                    "Failed to fetch product details"
+            )
+        );
     }
 };
 
-//Admin Products
+// Admin Products
 export const GetAdminProducts = () => async (dispatch) => {
     try {
         dispatch(ADMIN_PRODUCT_REQUEST());
-        const { data } = await axios.get(`/api/v1/admin/products`);
-        console.log("admin products", data);
+        const { data } = await axios.get(
+            `https://ecommerce-backend-for-fun.vercel.app/api/v1/admin/products`
+        );
         dispatch(ADMIN_PRODUCT_SUCCESS(data.products));
     } catch (error) {
-        dispatch(ADMIN_PRODUCT_FAIL(error.response.data.message));
+        dispatch(
+            ADMIN_PRODUCT_FAIL(
+                error.response?.data?.message ||
+                    "Failed to fetch admin products"
+            )
+        );
     }
 };
 
-//review
+// New Review
 export const newReview = (reviewData) => async (dispatch) => {
     try {
         dispatch(NEW_REVIEW_REQUEST());
@@ -114,16 +140,24 @@ export const newReview = (reviewData) => async (dispatch) => {
                 "Content-Type": "application/json",
             },
         };
-        const { data } = await axios.put(`/api/v1/review`, reviewData, config);
+        const { data } = await axios.put(
+            `https://ecommerce-backend-for-fun.vercel.app/api/v1/review`,
+            reviewData,
+            config
+        );
 
         dispatch(NEW_REVIEW_SUCCESS(data.success));
     } catch (error) {
-        dispatch(NEW_REVIEW_FAIL(error.response.data.message));
+        dispatch(
+            NEW_REVIEW_FAIL(
+                error.response?.data?.message || "Failed to submit review"
+            )
+        );
     }
 };
 
-// NEW PRODUCT
-export const createProduct = (productdata) => async (dispatch) => {
+// New Product
+export const createProduct = (productData) => async (dispatch) => {
     try {
         dispatch(NEW_PRODUCT_REQUEST());
         const config = {
@@ -131,20 +165,24 @@ export const createProduct = (productdata) => async (dispatch) => {
                 "Content-Type": "application/json",
             },
         };
-        console.log(productdata);
         const { data } = await axios.post(
-            `/api/v1/admin/products/new`,
-            productdata,
+            `https://ecommerce-backend-for-fun.vercel.app/api/v1/admin/products/new`,
+            productData,
             config
         );
 
         dispatch(NEW_PRODUCT_SUCCESS(data));
     } catch (error) {
-        dispatch(NEW_PRODUCT_FAIL(error.response.data.message));
+        dispatch(
+            NEW_PRODUCT_FAIL(
+                error.response?.data?.message || "Failed to create product"
+            )
+        );
     }
 };
-// UPDATE PRODUCT
-export const updateProduct = (id, productdata) => async (dispatch) => {
+
+// Update Product
+export const updateProduct = (id, productData) => async (dispatch) => {
     try {
         dispatch(UPDATE_PRODUCT_REQUEST());
         const config = {
@@ -152,54 +190,76 @@ export const updateProduct = (id, productdata) => async (dispatch) => {
                 "Content-Type": "application/json",
             },
         };
-        console.log(productdata);
         const { data } = await axios.put(
-            `/api/v1/admin/products/${id}`,
-            productdata,
+            `https://ecommerce-backend-for-fun.vercel.app/api/v1/admin/products/${id}`,
+            productData,
             config
         );
 
         dispatch(UPDATE_PRODUCT_SUCCESS(data));
     } catch (error) {
-        dispatch(UPDATE_PRODUCT_FAIL(error.response.data.message));
+        dispatch(
+            UPDATE_PRODUCT_FAIL(
+                error.response?.data?.message || "Failed to update product"
+            )
+        );
     }
 };
-// DeleteProduct
+
+// Delete Product
 export const DeleteProduct = (id) => async (dispatch) => {
     try {
         dispatch(DELETE_PRODUCT_REQUEST());
 
-        const { data } = await axios.delete(`/api/v1/admin/products/${id}`);
+        const { data } = await axios.delete(
+            `https://ecommerce-backend-for-fun.vercel.app/api/v1/admin/products/${id}`
+        );
 
         dispatch(DELETE_PRODUCT_SUCCESS(data.success));
     } catch (error) {
-        dispatch(DELETE_PRODUCT_FAIL(error.response.data.message));
+        dispatch(
+            DELETE_PRODUCT_FAIL(
+                error.response?.data?.message || "Failed to delete product"
+            )
+        );
     }
 };
-//Get Revies
+
+// Get All Reviews
 export const getAllReviews = (id) => async (dispatch) => {
     try {
         dispatch(ADMIN_REVIEW_REQUEST());
-        const { data } = await axios.get(`/api/v1/reviews?id=${id}`);
-        console.log("admin products", data);
+        const { data } = await axios.get(
+            `https://ecommerce-backend-for-fun.vercel.app/api/v1/reviews?id=${id}`
+        );
         dispatch(ADMIN_REVIEW_SUCCESS(data.reviews));
     } catch (error) {
-        dispatch(ADMIN_REVIEW_FAIL(error.response.data.message));
+        dispatch(
+            ADMIN_REVIEW_FAIL(
+                error.response?.data?.message || "Failed to fetch reviews"
+            )
+        );
     }
 };
-//delete reviews
+
+// Delete Reviews
 export const deleteReviews = (reviewId, productId) => async (dispatch) => {
     try {
         dispatch(DELETE_REVIEW_REQUEST());
         const { data } = await axios.delete(
-            `/api/v1/reviews?id=${reviewId}&productId=${productId}`
+            `https://ecommerce-backend-for-fun.vercel.app/api/v1/reviews?id=${reviewId}&productId=${productId}`
         );
         dispatch(DELETE_REVIEW_SUCCESS(data));
     } catch (error) {
-        dispatch(DELETE_REVIEW_FAIL(error.response.data.message));
+        dispatch(
+            DELETE_REVIEW_FAIL(
+                error.response?.data?.message || "Failed to delete review"
+            )
+        );
     }
 };
 
+// Clear Errors
 export const ClearNewReviewError = () => async (dispatch) => {
     dispatch(CLEAR_NEW_REVIEW_ERROR());
 };

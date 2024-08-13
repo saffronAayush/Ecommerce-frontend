@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
     CREATE_ORDER_REQUEST,
     CREATE_ORDER_SUCCESS,
@@ -10,7 +11,6 @@ import {
     MY_ORDER_SUCCESS,
     CLEAR_MY_ORDER_ERROR,
 } from "../slices/MyOrderSlice";
-
 import {
     ORDER_DETAILS_REQUEST,
     ORDER_DETAILS_FAIL,
@@ -33,10 +33,11 @@ import {
     DELETE_ORDER_RESET,
     DELETE_ORDER_CLEAR_ERROR,
 } from "../slices/AdminOrderSlice.js";
-import axios from "axios";
 
+axios.defaults.withCredentials = true;
+
+// Create Order
 export const createOrder = (order) => async (dispatch) => {
-    console.log(order, "orderactions");
     try {
         dispatch(CREATE_ORDER_REQUEST());
         const config = {
@@ -44,52 +45,73 @@ export const createOrder = (order) => async (dispatch) => {
                 "Content-Type": "application/json",
             },
         };
-        const { data } = await axios.post("/api/v1/order/new", order, config);
-        console.log(data, "order");
+        const { data } = await axios.post(
+            "https://ecommerce-backend-for-fun.vercel.app/api/v1/order/new",
+            order,
+            config
+        );
         dispatch(CREATE_ORDER_SUCCESS(data.order));
     } catch (error) {
-        dispatch(CREATE_ORDER_FAIL(error.response.data.message));
+        dispatch(
+            CREATE_ORDER_FAIL(
+                error.response?.data?.message || "Failed to create order"
+            )
+        );
     }
 };
 
-//my orders
+// Get My Orders
 export const myOrders = () => async (dispatch) => {
-    console.log("myo rder");
     try {
         dispatch(MY_ORDER_REQUEST());
-
-        const { data } = await axios.get("/api/v1/order/me");
-        console.log(data);
+        const { data } = await axios.get(
+            "https://ecommerce-backend-for-fun.vercel.app/api/v1/order/me"
+        );
         dispatch(MY_ORDER_SUCCESS(data.orders));
     } catch (error) {
-        dispatch(MY_ORDER_FAIL(error.response.data.message));
+        dispatch(
+            MY_ORDER_FAIL(
+                error.response?.data?.message || "Failed to fetch orders"
+            )
+        );
     }
 };
 
-// order details
+// Get Order Details
 export const getOrderDetails = (id) => async (dispatch) => {
     try {
         dispatch(ORDER_DETAILS_REQUEST());
-
-        const { data } = await axios.get(`/api/v1/order/${id}`);
-        console.log(data);
+        const { data } = await axios.get(
+            `https://ecommerce-backend-for-fun.vercel.app/api/v1/order/${id}`
+        );
         dispatch(ORDER_DETAILS_SUCCESS(data.order));
     } catch (error) {
-        dispatch(ORDER_DETAILS_FAIL(error.response.data.message));
+        dispatch(
+            ORDER_DETAILS_FAIL(
+                error.response?.data?.message || "Failed to fetch order details"
+            )
+        );
     }
 };
 
-// ALL ORDER -- ADMIN
+// Get All Orders (Admin)
 export const getAllOrders = () => async (dispatch) => {
     try {
         dispatch(ADMIN_ORDER_REQUEST());
-        const { data } = await axios.get("/api/v1/admin/orders");
+        const { data } = await axios.get(
+            "https://ecommerce-backend-for-fun.vercel.app/api/v1/admin/orders"
+        );
         dispatch(ADMIN_ORDER_SUCCESS(data));
     } catch (error) {
-        dispatch(ADMIN_ORDER_FAIL(error.response.data.message));
+        dispatch(
+            ADMIN_ORDER_FAIL(
+                error.response?.data?.message || "Failed to fetch all orders"
+            )
+        );
     }
 };
-//UPDATE ORDER -- ADMIN
+
+// Update Order (Admin)
 export const updateOrder = (id, order) => async (dispatch) => {
     try {
         dispatch(UPDATE_ORDER_REQUEST());
@@ -99,27 +121,38 @@ export const updateOrder = (id, order) => async (dispatch) => {
             },
         };
         const { data } = await axios.put(
-            `/api/v1/admin/order/${id}`,
+            `https://ecommerce-backend-for-fun.vercel.app/api/v1/admin/order/${id}`,
             order,
             config
         );
         dispatch(UPDATE_ORDER_SUCCESS(data));
     } catch (error) {
-        dispatch(UPDATE_ORDER_FAIL(error.response.data.message));
+        dispatch(
+            UPDATE_ORDER_FAIL(
+                error.response?.data?.message || "Failed to update order"
+            )
+        );
     }
 };
-//DELETE ORDER -- ADMIN
+
+// Delete Order (Admin)
 export const deleteOrder = (id) => async (dispatch) => {
     try {
         dispatch(DELETE_ORDER_REQUEST());
-
-        const { data } = await axios.delete(`/api/v1/admin/order/${id}`);
+        const { data } = await axios.delete(
+            `https://ecommerce-backend-for-fun.vercel.app/api/v1/admin/order/${id}`
+        );
         dispatch(DELETE_ORDER_SUCCESS(data));
     } catch (error) {
-        dispatch(DELETE_ORDER_FAIL(error.response.data.message));
+        dispatch(
+            DELETE_ORDER_FAIL(
+                error.response?.data?.message || "Failed to delete order"
+            )
+        );
     }
 };
 
+// Clear Errors
 export const clearOrderError = () => async (dispatch) => {
     dispatch(CLEAR_ORDER_ERROR());
 };

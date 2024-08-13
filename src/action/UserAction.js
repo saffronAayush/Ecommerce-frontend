@@ -51,6 +51,7 @@ import {
     USER_DETAILS_SUCCESS,
     CLEAR_USER_DETAILS_ERROR,
 } from "../slices/AdminUserDetailSlice.js";
+axios.defaults.withCredentials = true;
 
 // LOGIN
 const Login = (email, password) => async (dispatch) => {
@@ -63,18 +64,18 @@ const Login = (email, password) => async (dispatch) => {
         };
 
         const { data } = await axios.post(
-            "/api/v1/login",
+            "https://ecommerce-backend-for-fun.vercel.app/api/v1/login",
             { email, password },
             config
         );
 
         dispatch(LOGIN_SUCCESS(data));
     } catch (error) {
-        dispatch(LOGIN_FAIL(error.response.data.message));
+        dispatch(LOGIN_FAIL(error.response?.data?.message || "Login failed"));
     }
 };
 
-//REGISTER USER
+// REGISTER USER
 const Register = (userData) => async (dispatch) => {
     try {
         dispatch(REGISTER_REQUEST());
@@ -84,39 +85,54 @@ const Register = (userData) => async (dispatch) => {
             },
         };
 
-        const { data } = await axios.post("/api/v1/register", userData, config);
+        const { data } = await axios.post(
+            "https://ecommerce-backend-for-fun.vercel.app/api/v1/register",
+            userData,
+            config
+        );
         dispatch(REGISTER_SUCCESS(data));
     } catch (error) {
-        dispatch(REGISTER_FAIL(error.response.data.message));
+        dispatch(
+            REGISTER_FAIL(
+                error.response?.data?.message || "Registration failed"
+            )
+        );
     }
 };
 
-//LOAD USER
+// LOAD USER
 const LoadUser = () => async (dispatch) => {
     try {
         dispatch(LOAD_USER_REQUEST());
 
-        const { data } = await axios.get("/api/v1/me");
-        const user = await data.user;
+        const { data } = await axios.get(
+            "https://ecommerce-backend-for-fun.vercel.app/api/v1/me"
+        );
+        const user = data.user;
 
-        await dispatch(LOAD_USER_SUCCESS(user));
+        dispatch(LOAD_USER_SUCCESS(user));
     } catch (error) {
-        dispatch(LOAD_USER_FAIL(error.response.data.message));
+        dispatch(
+            LOAD_USER_FAIL(
+                error.response?.data?.message || "Failed to load user"
+            )
+        );
     }
 };
 
-//logout user
+// LOGOUT
 const Logout = () => async (dispatch) => {
     try {
-        await axios.get(`/api/v1/logout`);
+        await axios.get(
+            "https://ecommerce-backend-for-fun.vercel.app/api/v1/logout"
+        );
         dispatch(LOGOUT_SUCCESS());
     } catch (error) {
-        dispatch(LOGOUT_FAIL(error.response.data.message));
+        dispatch(LOGOUT_FAIL(error.response?.data?.message || "Logout failed"));
     }
 };
 
-//////////////////////////////////////////////////////////////
-//Update profile
+// UPDATE PROFILE
 const UpdateProfile = (userData) => async (dispatch) => {
     try {
         dispatch(UPDATE_PROFILE_REQUEST());
@@ -126,15 +142,23 @@ const UpdateProfile = (userData) => async (dispatch) => {
             },
         };
 
-        const { data } = await axios.put("/api/v1/me/update", userData, config);
+        const { data } = await axios.put(
+            "https://ecommerce-backend-for-fun.vercel.app/api/v1/me/update",
+            userData,
+            config
+        );
         dispatch(UPDATE_PROFILE_SUCCESS(data));
     } catch (error) {
-        dispatch(UPDATE_PROFILE_FAIL(error.response.data.message));
+        dispatch(
+            UPDATE_PROFILE_FAIL(
+                error.response?.data?.message || "Failed to update profile"
+            )
+        );
     }
 };
 
-//Update password
-const updatePassword = (userDate) => async (dispatch) => {
+// UPDATE PASSWORD
+const updatePassword = (userData) => async (dispatch) => {
     try {
         dispatch(UPDATE_PASSWORD_REQUEST());
         const config = {
@@ -143,17 +167,22 @@ const updatePassword = (userDate) => async (dispatch) => {
             },
         };
         const { data } = await axios.put(
-            "/api/v1/password/update",
-            userDate,
+            "https://ecommerce-backend-for-fun.vercel.app/api/v1/password/update",
+            userData,
             config
         );
 
         dispatch(UPDATE_PASSWORD_SUCCESS(data));
     } catch (error) {
-        dispatch(UPDATE_PASSWORD_FAIL(error.response.data.message));
+        dispatch(
+            UPDATE_PASSWORD_FAIL(
+                error.response?.data?.message || "Failed to update password"
+            )
+        );
     }
 };
-// forgot password
+
+// FORGOT PASSWORD
 const forgotPassword = (email) => async (dispatch) => {
     try {
         dispatch(FORGOT_PASSWORD_REQUEST());
@@ -164,14 +193,18 @@ const forgotPassword = (email) => async (dispatch) => {
         };
 
         const { data } = await axios.post(
-            "/api/v1/password/forgot",
+            "https://ecommerce-backend-for-fun.vercel.app/api/v1/password/forgot",
             email,
             config
         );
 
         dispatch(FORGOT_PASSWORD_SUCCESS(data));
     } catch (error) {
-        dispatch(FORGOT_PASSWORD_FAIL(error.response.data.message));
+        dispatch(
+            FORGOT_PASSWORD_FAIL(
+                error.response?.data?.message || "Forgot password failed"
+            )
+        );
     }
 };
 
@@ -185,42 +218,60 @@ const resetPassword = (token, passwords) => async (dispatch) => {
             },
         };
         const { data } = await axios.put(
-            `/api/v1/password/reset/${token}`,
+            `https://ecommerce-backend-for-fun.vercel.app/api/v1/password/reset/${token}`,
             passwords,
             config
         );
 
         dispatch(RESET_PASSWORD_SUCCESS(data));
     } catch (error) {
-        dispatch(RESET_PASSWORD_FAIL(error.response.data.message));
+        dispatch(
+            RESET_PASSWORD_FAIL(
+                error.response?.data?.message || "Reset password failed"
+            )
+        );
     }
 };
 
-//get all users
+// GET ALL USERS
 export const getAllUsers = () => async (dispatch) => {
     try {
         dispatch(ADMIN_USER_REQUEST());
 
-        const { data } = await axios.get("/api/v1/admin/users");
+        const { data } = await axios.get(
+            "https://ecommerce-backend-for-fun.vercel.app/api/v1/admin/users"
+        );
 
-        await dispatch(ADMIN_USER_SUCCESS(data));
+        dispatch(ADMIN_USER_SUCCESS(data));
     } catch (error) {
-        dispatch(ADMIN_USER_FAIL(error.response.data.message));
+        dispatch(
+            ADMIN_USER_FAIL(
+                error.response?.data?.message || "Failed to get users"
+            )
+        );
     }
 };
-//get  user details
+
+// GET USER DETAILS
 export const getUserDetails = (id) => async (dispatch) => {
     try {
         dispatch(USER_DETAILS_REQUEST());
 
-        const { data } = await axios.get(`/api/v1/admin/user/${id}`);
-        await dispatch(USER_DETAILS_SUCCESS(data));
+        const { data } = await axios.get(
+            `https://ecommerce-backend-for-fun.vercel.app/api/v1/admin/user/${id}`
+        );
+        dispatch(USER_DETAILS_SUCCESS(data));
     } catch (error) {
-        dispatch(USER_DETAILS_FAIL(error.response.data.message));
+        dispatch(
+            USER_DETAILS_FAIL(
+                error.response?.data?.message || "Failed to get user details"
+            )
+        );
     }
 };
-//Update User
-export const updateUser = (id, userDate) => async (dispatch) => {
+
+// UPDATE USER
+export const updateUser = (id, userData) => async (dispatch) => {
     try {
         dispatch(UPDATE_USER_REQUEST());
         const config = {
@@ -229,28 +280,40 @@ export const updateUser = (id, userDate) => async (dispatch) => {
             },
         };
         const { data } = await axios.put(
-            `/api/v1/admin/user/${id}`,
-            userDate,
+            `https://ecommerce-backend-for-fun.vercel.app/api/v1/admin/user/${id}`,
+            userData,
             config
         );
 
         dispatch(UPDATE_USER_SUCCESS(data));
     } catch (error) {
-        dispatch(UPDATE_USER_FAIL(error.response.data.message));
+        dispatch(
+            UPDATE_USER_FAIL(
+                error.response?.data?.message || "Failed to update user"
+            )
+        );
     }
 };
-// Delete user
+
+// DELETE USER
 export const deleteUser = (id) => async (dispatch) => {
     try {
         dispatch(DELETE_USER_REQUEST());
 
-        const { data } = await axios.delete(`/api/v1/admin/user/${id}`);
+        const { data } = await axios.delete(
+            `https://ecommerce-backend-for-fun.vercel.app/api/v1/admin/user/${id}`
+        );
 
         dispatch(DELETE_USER_SUCCESS(data));
     } catch (error) {
-        dispatch(DELETE_USER_FAIL(error.response.data.message));
+        dispatch(
+            DELETE_USER_FAIL(
+                error.response?.data?.message || "Failed to delete user"
+            )
+        );
     }
 };
+
 // CLEAR ERROR
 const ClearLoginErrors = () => async (dispatch) => {
     dispatch(CLEAR_LOGIN_ERRORS());
@@ -261,7 +324,6 @@ const ClearProfileError = () => async (dispatch) => {
 const ClearForgotPasswordError = () => async (dispatch) => {
     dispatch(CLEAR_FORGET_ERRORS());
 };
-//
 const ClearAdminUserError = () => async (dispatch) => {
     dispatch(ADMIN_USER_CLEAR_ERROR());
 };

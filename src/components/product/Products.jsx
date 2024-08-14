@@ -12,6 +12,7 @@ import Pagination from "react-js-pagination";
 import MetaData from "../layout/MetaData";
 import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography";
+import ProductLoaderContainer from "../Home/ProductLoaderContainer.jsx";
 
 const categories = [
     "Laptop",
@@ -54,13 +55,13 @@ const Products = () => {
     }, [dispatch, keyword, currentPage, price, catagory, ratings, error]);
     return (
         <>
-            {loading ? (
-                <Loader />
-            ) : (
+            <>
+                <MetaData title="PRODUCTS -- ECOMMERCE" />
+                <h2 className="productsHeading">Products</h2>
                 <>
-                    <>
-                        <MetaData title="PRODUCTS -- ECOMMERCE" />
-                        <h2 className="productsHeading">Products</h2>
+                    {loading ? (
+                        <ProductLoaderContainer />
+                    ) : (
                         <div className="products">
                             {products &&
                                 products.map((product) => (
@@ -70,69 +71,72 @@ const Products = () => {
                                     />
                                 ))}
                         </div>
-                        <div className="filterBox">
-                            <Typography>Price</Typography>
-                            <Slider
-                                value={price}
-                                onChange={priceHandler}
-                                valueLabelDisplay="auto"
-                                aria-labelledby="range-slider"
-                                min={0}
-                                max={25000}
-                            />
-
-                            <Typography>Categories</Typography>
-                            <ul className="categoryBox">
-                                {categories.map((category) => (
-                                    <li
-                                        className="category-link"
-                                        key={category}
-                                        onClick={() => setCatagory(category)}
-                                    >
-                                        {category}
-                                    </li>
-                                ))}
-                            </ul>
-
-                            <fieldset>
-                                <Typography component="legend">
-                                    Ratings Above
-                                </Typography>
-                                <Slider
-                                    value={ratings}
-                                    onChange={(e, newRating) => {
-                                        setRatings(newRating);
-                                    }}
-                                    aria-labelledby="continuous-slider"
-                                    valueLabelDisplay="auto"
-                                    min={0}
-                                    max={5}
-                                />
-                            </fieldset>
-                        </div>
-                        {resultPerPage < filteredProductsCount && (
-                            <div className="paginationBox">
-                                <Pagination
-                                    activePage={currentPage}
-                                    itemsCountPerPage={resultPerPage}
-                                    totalItemsCount={productsCount}
-                                    onChange={setCurrentPageNo}
-                                    nextPageText="Next"
-                                    prevPageText="Prev"
-                                    firstPageText="1st"
-                                    lastPageText="Last"
-                                    itemClass="page-item"
-                                    linkClass="page-link"
-                                    activeClass="pageItemActive"
-                                    activeLinkClass="pageLinkActive"
-                                />
-                            </div>
-                        )}
-                        <ToastContainer />
-                    </>
+                    )}
                 </>
-            )}
+                <div className="filterBox">
+                    <Typography>Price</Typography>
+                    <Slider
+                        value={price}
+                        onChange={priceHandler}
+                        valueLabelDisplay="auto"
+                        aria-labelledby="range-slider"
+                        min={0}
+                        max={25000}
+                    />
+
+                    <Typography>Categories</Typography>
+                    <ul className="categoryBox">
+                        {categories.map((category) => (
+                            <li
+                                className="category-link"
+                                key={category}
+                                onClick={() => setCatagory(category)}
+                            >
+                                {category}
+                            </li>
+                        ))}
+                    </ul>
+
+                    <fieldset>
+                        <Typography component="legend">
+                            Ratings Above
+                        </Typography>
+                        <Slider
+                            value={ratings}
+                            onChange={(e, newRating) => {
+                                setRatings(newRating);
+                            }}
+                            aria-labelledby="continuous-slider"
+                            valueLabelDisplay="auto"
+                            min={0}
+                            max={5}
+                        />
+                    </fieldset>
+                </div>
+                {resultPerPage < filteredProductsCount && (
+                    <div className="paginationBox">
+                        <Pagination
+                            activePage={currentPage}
+                            itemsCountPerPage={resultPerPage}
+                            totalItemsCount={productsCount}
+                            onChange={setCurrentPageNo}
+                            nextPageText="Next"
+                            prevPageText="Prev"
+                            firstPageText="1st"
+                            lastPageText="Last"
+                            itemClass="page-item"
+                            linkClass="page-link"
+                            activeClass="pageItemActive"
+                            activeLinkClass="pageLinkActive"
+                        />
+                    </div>
+                )}
+                <ToastContainer />
+            </>
         </>
+        // ******
+
+        // ********
     );
 };
 

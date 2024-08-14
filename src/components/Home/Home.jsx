@@ -5,9 +5,11 @@ import ProductCard from "./ProductCard.jsx";
 import MetaData from "../layout/MetaData.jsx";
 import { GetProduct, ClearErrors } from "../../action/ProductAction.js";
 import { useDispatch, useSelector } from "react-redux";
+import ProductLoader from "./ProductLoader.jsx";
 import Loader from "../layout/Loader/Loader.jsx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import HomeLoad from "./ProductLoaderContainer.jsx";
 
 const Home = () => {
     const dispatch = useDispatch();
@@ -25,24 +27,23 @@ const Home = () => {
     window.addEventListener("contextmenu", (e) => e.preventDefault());
     return (
         <>
-            {loading ? (
-                <Loader />
-            ) : (
-                <>
-                    <MetaData title="Ecommerce-Home" />
-                    <div className="banner">
-                        <p>Welcome to Ecommerce</p>
-                        <h1>FIND AMAZING PRODUCTS BELOW</h1>
+            <MetaData title="Ecommerce-Home" />
+            <div className="banner">
+                <p>Welcome to Ecommerce</p>
+                <h1>FIND AMAZING PRODUCTS BELOW</h1>
 
-                        <a href="#container">
-                            <button>
-                                Scroll <CgMouse />
-                            </button>
-                        </a>
-                    </div>
+                <a href="#container">
+                    <button>
+                        Scroll <CgMouse />
+                    </button>
+                </a>
+            </div>
 
-                    <h2 className="homeHeading">Featured Products</h2>
-
+            <h2 className="homeHeading">Featured Products</h2>
+            <>
+                {loading ? (
+                    <HomeLoad />
+                ) : (
                     <div className="container" id="container">
                         {products &&
                             products.map((product) => {
@@ -54,9 +55,8 @@ const Home = () => {
                                 );
                             })}
                     </div>
-                </>
-            )}
-            <ToastContainer />
+                )}
+            </>
         </>
     );
 };

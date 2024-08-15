@@ -49,50 +49,29 @@ const Shipping = () => {
     return (
         <Fragment>
             <MetaData title="Shipping Details" />
+            <div className="pageContainer">
+                <CheckoutSteps activeStep={0} />
 
-            <CheckoutSteps activeStep={0} />
+                <div className="shippingContainer">
+                    <div className="shippingBox">
+                        <h2 className="shippingHeading">Shipping Details</h2>
 
-            <div className="shippingContainer">
-                <div className="shippingBox">
-                    <h2 className="shippingHeading">Shipping Details</h2>
-
-                    <form
-                        className="shippingForm"
-                        encType="multipart/form-data"
-                        onSubmit={shippingSubmit}
-                    >
-                        <div>
-                            <PublicIcon />
-
-                            <select
-                                required
-                                value={country}
-                                onChange={(e) => setCountry(e.target.value)}
-                            >
-                                <option value="">Country</option>
-                                {Country &&
-                                    Country.getAllCountries().map((item) => (
-                                        <option
-                                            key={item.isoCode}
-                                            value={item.isoCode}
-                                        >
-                                            {item.name}
-                                        </option>
-                                    ))}
-                            </select>
-                        </div>
-                        {country && (
+                        <form
+                            className="shippingForm"
+                            encType="multipart/form-data"
+                            onSubmit={shippingSubmit}
+                        >
                             <div>
-                                <TransferWithinAStationIcon />
+                                <PublicIcon />
 
                                 <select
                                     required
-                                    value={state}
-                                    onChange={(e) => setState(e.target.value)}
+                                    value={country}
+                                    onChange={(e) => setCountry(e.target.value)}
                                 >
-                                    <option value="">State</option>
-                                    {State &&
-                                        State.getStatesOfCountry(country).map(
+                                    <option value="">Country</option>
+                                    {Country &&
+                                        Country.getAllCountries().map(
                                             (item) => (
                                                 <option
                                                     key={item.isoCode}
@@ -104,61 +83,87 @@ const Shipping = () => {
                                         )}
                                 </select>
                             </div>
-                        )}
-                        <div>
-                            <LocationCityIcon />
-                            <input
-                                type="text"
-                                placeholder="City"
-                                required
-                                value={city}
-                                onChange={(e) => setCity(e.target.value)}
-                            />
-                        </div>
-                        <div>
-                            <HomeIcon />
-                            <input
-                                type="text"
-                                placeholder="Address"
-                                required
-                                value={address}
-                                onChange={(e) => setAddress(e.target.value)}
-                            />
-                        </div>
+                            {country && (
+                                <div>
+                                    <TransferWithinAStationIcon />
 
-                        <div>
-                            <PinDropIcon />
-                            <input
-                                type="number"
-                                placeholder="Pin Code"
-                                required
-                                value={pinCode}
-                                onChange={(e) => setPinCode(e.target.value)}
-                            />
-                        </div>
+                                    <select
+                                        required
+                                        value={state}
+                                        onChange={(e) =>
+                                            setState(e.target.value)
+                                        }
+                                    >
+                                        <option value="">State</option>
+                                        {State &&
+                                            State.getStatesOfCountry(
+                                                country
+                                            ).map((item) => (
+                                                <option
+                                                    key={item.isoCode}
+                                                    value={item.isoCode}
+                                                >
+                                                    {item.name}
+                                                </option>
+                                            ))}
+                                    </select>
+                                </div>
+                            )}
+                            <div>
+                                <LocationCityIcon />
+                                <input
+                                    type="text"
+                                    placeholder="City"
+                                    required
+                                    value={city}
+                                    onChange={(e) => setCity(e.target.value)}
+                                />
+                            </div>
+                            <div>
+                                <HomeIcon />
+                                <input
+                                    type="text"
+                                    placeholder="Address"
+                                    required
+                                    value={address}
+                                    onChange={(e) => setAddress(e.target.value)}
+                                />
+                            </div>
 
-                        <div>
-                            <PhoneIcon />
-                            <input
-                                type="number"
-                                placeholder="Phone Number"
-                                required
-                                value={phoneNo}
-                                onChange={(e) => setPhoneNo(e.target.value)}
-                                size="10"
-                            />
-                        </div>
+                            <div>
+                                <PinDropIcon />
+                                <input
+                                    type="number"
+                                    placeholder="Pin Code"
+                                    required
+                                    value={pinCode}
+                                    onChange={(e) => setPinCode(e.target.value)}
+                                />
+                            </div>
 
-                        <input
-                            type="submit"
-                            value="Continue"
-                            className="shippingBtn"
-                            disabled={state ? false : true}
-                        />
-                    </form>
+                            <div>
+                                <PhoneIcon />
+                                <input
+                                    type="number"
+                                    placeholder="Phone Number"
+                                    required
+                                    value={phoneNo}
+                                    onChange={(e) => setPhoneNo(e.target.value)}
+                                    size="10"
+                                />
+                            </div>
+
+                            <input
+                                type="submit"
+                                value="Continue"
+                                className="shippingBtn"
+                                disabled={state ? false : true}
+                            />
+                        </form>
+                    </div>
                 </div>
+                <ToastContainer />
             </div>
-            <ToastContainer />
         </Fragment>
     );
 };

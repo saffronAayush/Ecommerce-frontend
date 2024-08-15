@@ -1,38 +1,42 @@
+.pageContainer {
+    padding-top: 3rem; /* Added top padding to move everything down */
+}
 .shippingContainer {
-    width: 100vw;
-    max-width: 100%;
+    /* width: 100%; */
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* Changed alignment to move the layout down */
     flex-direction: column;
+    padding: 2rem 1rem; /* Added more padding at the top */
 }
 
 .shippingBox {
     background-color: white;
-    width: 25vw;
-    height: 90vh;
+    width: 75%;
+    max-width: 400px; /* Reduced the max width */
+    padding: 2rem;
     box-sizing: border-box;
     overflow: hidden;
+    border-radius: 8px;
+    margin: auto;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .shippingHeading {
     text-align: center;
     color: rgba(0, 0, 0, 0.664);
-    font: 400 1.3vmax "Roboto";
-    padding: 1.3vmax;
+    font: 400 1.4rem "Roboto"; /* Slightly reduced font size */
+    padding-bottom: 1rem;
     border-bottom: 1px solid rgba(0, 0, 0, 0.205);
-    width: 50%;
-    margin: auto;
+    margin-bottom: 1.5rem; /* Increased bottom margin */
 }
 
 .shippingForm {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: auto;
-    padding: 2vmax;
     justify-content: space-evenly;
-    height: 80%;
+    width: 100%;
     transition: all 0.5s;
 }
 
@@ -40,72 +44,93 @@
     display: flex;
     width: 100%;
     align-items: center;
+    margin-bottom: 1.2rem; /* Increased bottom margin */
+    position: relative;
 }
 
 .shippingForm > div > input,
 .shippingForm > div > select {
-    padding: 1vmax 4vmax;
-    padding-right: 1vmax;
+    padding: 0.8rem 1rem 0.8rem 2.5rem; /* Adjusted padding to prevent overlap */
     width: 100%;
     box-sizing: border-box;
     border: 1px solid rgba(0, 0, 0, 0.267);
     border-radius: 4px;
-    font: 300 0.9vmax cursive;
+    font: 300 1rem cursive;
     outline: none;
 }
 
 .shippingForm > div > svg {
     position: absolute;
-    transform: translateX(1vmax);
-    font-size: 1.6vmax;
+    left: 10px;
+    font-size: 1.4rem; /* Increased icon size */
     color: rgba(0, 0, 0, 0.623);
+    z-index: 1; /* Ensured the icon stays above the input */
 }
 
 .shippingBtn {
     border: none;
     background-color: tomato;
     color: white;
-    font: 300 1vmax "Roboto";
+    font: 300 1.2rem "Roboto";
     width: 100%;
-    padding: 1vmax;
+    padding: 0.8rem;
     cursor: pointer;
     transition: all 0.5s;
     outline: none;
-    margin: 2vmax;
+    margin-top: 1.5rem; /* Increased margin-top */
 }
 
 .shippingBtn:hover {
     background-color: rgb(179, 66, 46);
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 768px) {
     .shippingBox {
-        width: 100vw;
-        height: 95vh;
+        width: 85%;
+        padding: 1.5rem;
     }
 
     .shippingHeading {
-        font: 400 6vw "Roboto";
-        padding: 5vw;
-    }
-
-    .shippingForm {
-        padding: 11vw;
+        font-size: 1.2rem;
+        padding-bottom: 0.8rem;
     }
 
     .shippingForm > div > input,
     .shippingForm > div > select {
-        padding: 5vw 10vw;
-        font: 300 4vw cursive;
-    }
-
-    .shippingForm > div > svg {
-        font-size: 6vw;
-        transform: translateX(3vw);
+        padding: 0.7rem 0.9rem 0.7rem 2.2rem; /* Adjusted padding */
+        font-size: 1rem;
     }
 
     .shippingBtn {
-        font: 300 4vw "Roboto";
-        padding: 4vw;
+        font-size: 1rem;
+        padding: 0.7rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .shippingBox {
+        width: 90%;
+        padding: 1rem;
+    }
+
+    .shippingHeading {
+        font-size: 1rem;
+        padding-bottom: 0.5rem;
+    }
+
+    .shippingForm > div > input,
+    .shippingForm > div > select {
+        padding: 0.6rem 0.8rem 0.6rem 2rem; /* Adjusted padding */
+        font-size: 0.9rem;
+    }
+
+    .shippingBtn {
+        font-size: 0.9rem;
+        padding: 0.6rem;
+    }
+
+    .shippingForm > div > svg {
+        font-size: 1.2rem; /* Increased icon size */
+        left: 8px;
     }
 }

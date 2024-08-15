@@ -60,35 +60,8 @@ function App() {
     const { isAuthenticated, LogedUser, error } = useSelector(
         (state) => state.User
     );
-    const [stripeApiKey, setSetstripeApiKey] = useState("");
-    const [apiAllow, setApiAllow] = useState(false);
-
-    const getStripeApiKey = async () => {
-        try {
-            // Fetch the Stripe API key from the backend
-            const { data } = await axios.get(
-                "https://ecommerce-backend-for-fun.vercel.app/api/v1/stripeapikey"
-            );
-
-            // Set the Stripe API key to the state
-            setSetstripeApiKey(data.stripeApiKey);
-
-            // Log the Stripe API key (for debugging purposes)
-            console.log(data.stripeApiKey);
-        } catch (error) {
-            // Handle errors
-            console.error("Error fetching Stripe API key:", error);
-
-            // Optionally, you can set a default value or notify the user
-            setSetstripeApiKey(null);
-
-            // If you need to notify the user
-            // alert('Failed to fetch payment credentials. Please try again later.');
-
-            // Or handle the error in other ways as needed
-        }
-    };
-
+    const stripeApiKey =
+        "pk_test_51PdCqSEMWt45P6mpuMWGOzdlZtUQkGtBDx47LX0CdzPpoPlwp0BuZZWJkYAtkddmdhTGqT1Nj1HtMGN9QqwyzSND00JpqMgrxn";
     useEffect(() => {
         WebFont.load({
             google: {
@@ -99,8 +72,6 @@ function App() {
         if (error) {
             dispatch(ClearLoginErrors());
         }
-
-        getStripeApiKey();
     }, [error, dispatch]);
 
     return (
@@ -109,91 +80,101 @@ function App() {
                 <ScrollToTop />
                 <Header />
                 {isAuthenticated && <UserOptions user={LogedUser} />}
-                {stripeApiKey && (
-                    <>
-                        <Elements stripe={loadStripe(stripeApiKey)}>
-                            <Routes>
-                                <Route element={<ProtectedRoute />}>
-                                    <Route
-                                        path="/process/payment"
-                                        element={<Payment />}
-                                    />
-                                </Route>
-                            </Routes>
-                        </Elements>
-                    </>
-                )}
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/product/:id" element={<ProductDetails />} />
-                    <Route path="/products" element={<Products />} />
-                    <Route path="/products/:keyword" element={<Products />} />
-                    <Route path="/search" element={<Search />} />
-                    <Route path="/login" element={<LoginSignup />} />
-                    <Route path="/cart" element={<Cart />} />
-                    <Route
-                        path="/password/forgot"
-                        element={<ForgotPassword />}
-                    />
-                    <Route
-                        path="/password/reset/:token"
-                        element={<ResetPassword />}
-                    />
-
-                    <Route element={<ProtectedRoute />}>
-                        <Route path="/account" element={<Profile />} />
-                        <Route path="/shipping" element={<Shipping />} />
-                        <Route path="/me/update" element={<Update_profile />} />
+                <Elements stripe={loadStripe(stripeApiKey)}>
+                    <Routes>
+                        <Route element={<ProtectedRoute />}>
+                            <Route
+                                path="/process/payment"
+                                element={<Payment />}
+                            />
+                        </Route>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/about" element={<About />} />
+                        <Route path="/contact" element={<Contact />} />
                         <Route
-                            path="/password/update"
-                            element={<UpdatePassword />}
+                            path="/product/:id"
+                            element={<ProductDetails />}
+                        />
+                        <Route path="/products" element={<Products />} />
+                        <Route
+                            path="/products/:keyword"
+                            element={<Products />}
+                        />
+                        <Route path="/search" element={<Search />} />
+                        <Route path="/login" element={<LoginSignup />} />
+                        <Route path="/cart" element={<Cart />} />
+                        <Route
+                            path="/password/forgot"
+                            element={<ForgotPassword />}
                         />
                         <Route
-                            path="/order/confirm"
-                            element={<ConfirmOrder />}
+                            path="/password/reset/:token"
+                            element={<ResetPassword />}
                         />
-                        <Route path="/success" element={<OrderSuccess />} />
-                        <Route path="/orders" element={<MyOrders />} />
-                        <Route path="/order/:id" element={<OrderDetails />} />
-                    </Route>
-
-                    <Route element={<ProtectedRoute admin={LogedUser} />}>
-                        <Route
-                            path="/admin/dashboard"
-                            element={<Dashboard />}
-                        />
-                        <Route
-                            path="/admin/products"
-                            element={<ProductList />}
-                        />
-                        <Route path="/admin/product" element={<NewProduct />} />
-                        <Route
-                            path="/admin/product/:id"
-                            element={<UpdateProduct />}
-                        />
-                        <Route path="/admin/orders" element={<OrderList />} />
-                        <Route
-                            path="/admin/order/:id"
-                            element={<ProcessOrder />}
-                        />
-                        <Route path="/admin/users" element={<UserList />} />
-                        <Route
-                            path="/admin/user/:id"
-                            element={<UserUpdate />}
-                        />
-                        <Route
-                            path="/admin/reviews"
-                            element={<ProductReviews />}
-                        />
-                    </Route>
-                    <Route path="*" element={<NotFound />} />
-                </Routes>
-
+                        <Route element={<ProtectedRoute />}>
+                            <Route path="/account" element={<Profile />} />
+                            <Route path="/shipping" element={<Shipping />} />
+                            <Route
+                                path="/me/update"
+                                element={<Update_profile />}
+                            />
+                            <Route
+                                path="/password/update"
+                                element={<UpdatePassword />}
+                            />
+                            <Route
+                                path="/order/confirm"
+                                element={<ConfirmOrder />}
+                            />
+                            <Route path="/success" element={<OrderSuccess />} />
+                            <Route path="/orders" element={<MyOrders />} />
+                            <Route
+                                path="/order/:id"
+                                element={<OrderDetails />}
+                            />
+                        </Route>
+                        <Route element={<ProtectedRoute admin={LogedUser} />}>
+                            <Route
+                                path="/admin/dashboard"
+                                element={<Dashboard />}
+                            />
+                            <Route
+                                path="/admin/products"
+                                element={<ProductList />}
+                            />
+                            <Route
+                                path="/admin/product"
+                                element={<NewProduct />}
+                            />
+                            <Route
+                                path="/admin/product/:id"
+                                element={<UpdateProduct />}
+                            />
+                            <Route
+                                path="/admin/orders"
+                                element={<OrderList />}
+                            />
+                            <Route
+                                path="/admin/order/:id"
+                                element={<ProcessOrder />}
+                            />
+                            <Route path="/admin/users" element={<UserList />} />
+                            <Route
+                                path="/admin/user/:id"
+                                element={<UserUpdate />}
+                            />
+                            <Route
+                                path="/admin/reviews"
+                                element={<ProductReviews />}
+                            />
+                        </Route>
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                </Elements>
                 <Footer />
             </Router>
         </>
     );
 }
+
 export default App;

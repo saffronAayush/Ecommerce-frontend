@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CheckoutSteps from "./CheckoutSteps.jsx";
 import { useSelector, useDispatch } from "react-redux";
 import MetaData from "../layout/MetaData";
@@ -23,8 +23,9 @@ const Payment = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const payBtn = useRef(null);
+    const [isProcessing, setIsProcessing] = useState(false);
     const stripe = useStripe();
-    const element = useElements();
+    const elements = useElements();
     const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
     const { error } = useSelector((state) => state.Order);
 
@@ -40,9 +41,10 @@ const Payment = () => {
         shippingPrice: orderInfo.shippingCharges,
         totalPrice: orderInfo.totalPrice,
     };
-    console.log(order, "paymernd");
+
     const submitHandler = async (e) => {
         e.preventDefault();
+        setIsProcessing(true);
         payBtn.current.disabled = true;
 
         try {
@@ -55,18 +57,18 @@ const Payment = () => {
                 amount: Math.round(orderInfo.totalPrice * 100),
             };
             const { data } = await axios.post(
-                "/api/v1/payment/process",
+                "https://ecommerce-backend-for-fun.vercel.app/api/v1/payment/process",
                 paymentData,
                 config
             );
 
             const client_secret = data.client_secret;
 
-            if (!stripe || !element) return;
+            if (!stripe || !elements) return;
 
             const result = await stripe.confirmCardPayment(client_secret, {
                 payment_method: {
-                    card: element.getElement(CardNumberElement),
+                    card: elements.getElement(CardNumberElement),
                     billing_details: {
                         name: user.name,
                         email: user.email,
@@ -80,8 +82,10 @@ const Payment = () => {
                     },
                 },
             });
+
             if (result.error) {
                 payBtn.current.disabled = false;
+                setIsProcessing(false);
                 toast.error(result.error.message);
             } else {
                 if (result.paymentIntent.status === "succeeded") {
@@ -93,55 +97,83 @@ const Payment = () => {
                     dispatch(createOrder(order));
                     navigate("/success");
                 } else {
-                    toast.error('There"s some error while processing payment');
+                    toast.error(
+                        "There was some error while processing payment"
+                    );
+                    setIsProcessing(false);
                 }
             }
-
-            console.log(CardNumberElement);
         } catch (error) {
             payBtn.current.disabled = false;
-            toast.error(error.response.data.message);
+            setIsProcessing(false);
+            if (error.response && error.response.data) {
+                toast.error(error.response.data.message);
+            } else {
+                toast.error("An unknown error occurred");
+            }
         }
     };
+
     useEffect(() => {
         if (error) {
             toast.error(error);
             dispatch(clearOrderError());
         }
-    }, [dispatch, toast, error]);
+    }, [dispatch, error]);
 
     return (
         <>
-            <MetaData title="Payment" />
-            <CheckoutSteps activeStep={2} />
-            <div className="paymentContainer">
-                <form
-                    className="paymentForm"
-                    onSubmit={(e) => submitHandler(e)}
-                >
-                    <Typography>Card Info</Typography>
-                    <div>
-                        <CreditCardIcon />
-                        <CardNumberElement className="paymentInput" />
-                    </div>
-                    <div>
-                        <EventIcon />
-                        <CardExpiryElement className="paymentInput" />
-                    </div>
-                    <div>
-                        <VpnKeyIcon />
-                        <CardCvcElement className="paymentInput" />
-                    </div>
+            <div className="pageContainer">
+                <MetaData title="Payment" />
+                <CheckoutSteps activeStep={2} />
+                <div className="paymentContainer">
+                    <form
+                        className="paymentForm"
+                        onSubmit={(e) => submitHandler(e)}
+                    >
+                        <Typography>Card Info</Typography>
+                        <div>
+                            <CreditCardIcon />
+                            <CardNumberElement className="paymentInput" />
+                        </div>
+                        <div>
+                            <EventIcon />
+                            <CardExpiryElement className="paymentInput" />
+                        </div>
+                        <div>
+                            <VpnKeyIcon />
+                            <CardCvcElement className="paymentInput" />
+                        </div>
 
-                    <input
-                        type="submit"
-                        value={`Pay - ₹${orderInfo && orderInfo.totalPrice}`}
-                        ref={payBtn}
-                        className="paymentFormBtn"
-                    />
-                </form>
+                        <button
+                            type="submit"
+                            ref={payBtn}
+                            className={`paymentFormBtn ${
+                                isProcessing ? "processing" : ""
+                            }`}
+                        >
+                            {isProcessing ? (
+                                <span className="loadingSpinner"></span>
+                            ) : (
+                                `Pay - ₹${orderInfo && orderInfo.totalPrice}`
+                            )}
+                        </button>
+                    </form>
+                </div>
+                <div className="testModeInfo">
+                    <p>This is in test mode. Use the following card details:</p>
+                    <p>
+                        <strong>Card Number:</strong> 4242 4242 4242 4242
+                    </p>
+                    <p>
+                        <strong>Expiry Date:</strong> 03/36
+                    </p>
+                    <p>
+                        <strong>CVV:</strong> 336
+                    </p>
+                </div>
+                <ToastContainer />
             </div>
-            <ToastContainer />
         </>
     );
 };

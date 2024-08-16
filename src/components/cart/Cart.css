@@ -83,13 +83,13 @@
     width: 3vmax;
     text-align: center;
     outline: none;
-    font: 400 1vmax "Roboto";
+    font: 400 1.3vmax "Roboto";
     color: rgba(0, 0, 0, 0.74);
 }
 
 .cartSubtotal {
     text-align: right;
-    font: 300 1vmax cursive;
+    font: 300 1.3vmax cursive;
     color: rgba(0, 0, 0, 0.753);
 }
 
@@ -105,7 +105,7 @@
     margin: 0 4vmax;
     box-sizing: border-box;
     padding: 2vmax 0;
-    font: 300 1vmax "Roboto";
+    font: 300 1.3vmax "Roboto";
     display: flex;
     justify-content: space-between;
 }
@@ -134,7 +134,14 @@
     .cartContainer {
         grid-template-columns: 3fr 1fr 1fr;
     }
-
+    .cartInput > input {
+        font: 400 12px "Roboto";
+    }
+    .cartSubtotal {
+        text-align: right;
+        font: 300 12px cursive;
+        color: rgba(0, 0, 0, 0.753);
+    }
     .cartGrossProfit {
         grid-template-columns: 1fr;
         text-align: center;
@@ -142,7 +149,7 @@
 
     .cartGrossProfitBox {
         margin: 0 2vmax;
-        font-size: 1.5vmax;
+        font-size: 1.9vmax;
     }
 
     .checkOutBtn {

@@ -10,14 +10,17 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
+    gap: 5px;
+    padding-top: 40px;
+    overflow: auto;
 }
 
 #myOrdersHeading {
     text-align: center;
-    font: 400 1.2vmax "Roboto";
+    font: 400 1.3vmax "Roboto";
     padding: 0.5vmax;
     box-sizing: border-box;
-    color: rgb(255, 255, 255);
+    color: rgb(174, 75, 75);
     transition: all 0.5s;
     background-color: rgb(44, 44, 44);
 }
@@ -54,7 +57,11 @@
 .MuiDataGrid-iconSeparator {
     display: none !important;
 }
-
+@media screen and (max-width: 1024px) {
+    .myOrdersTable div {
+        font: 300 1.6vmax "Roboto";
+    }
+}
 @media screen and (max-width: 600px) {
     .myOrdersPage {
         padding: 0;

@@ -91,19 +91,20 @@ const MyOrders = () => {
                 {loading ? (
                     <Loader />
                 ) : (
-                    <div className="myOrdersPage">
-                        <DataGrid
-                            rows={rows}
-                            columns={columns}
-                            pageSize={10}
-                            disableSelectionOnClick
-                            className="myOrdersTable"
-                            autoHeight
-                        />
-
-                        <Typography id="myOrdersHeading">
-                            {user.name}'s Orders
-                        </Typography>
+                    <div className="wraper">
+                        <div className="myOrdersPage">
+                            <Typography id="myOrdersHeading">
+                                {user.name}'s Orders
+                            </Typography>
+                            <DataGrid
+                                rows={rows}
+                                columns={columns}
+                                pageSize={10}
+                                disableSelectionOnClick
+                                className="myOrdersTable"
+                                autoHeight
+                            />
+                        </div>
                     </div>
                 )}
             </>

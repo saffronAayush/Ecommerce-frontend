@@ -125,6 +125,7 @@
 }
 
 .detailsBlock-4 > p {
+    display: inline;
     color: rgba(0, 0, 0, 0.534);
     font: 300 0.8vmax sans-serif;
 }
@@ -202,15 +203,93 @@
     text-align: center;
     color: rgba(0, 0, 0, 0.548);
 }
+@media screen and (max-width: 1000px) {
+    .ProductDetails > div {
+        display: flex;
+        align-items: start;
+        padding-left: 20px;
+    }
+
+    .detailsBlock-1 > h2 {
+        font: 600 1.4rem "Roboto"; /* Adjusted font size */
+    }
+
+    .detailsBlock-1 > p {
+        font: 200 7px cursive; /* Adjusted font size */
+    }
+    .detailsBlock-2 {
+        width: auto;
+        margin: 6px 0;
+    }
+    .detailsBlock-2-span {
+        font: 200 9px cursive; /* Adjusted font size */
+        color: rgba(0, 0, 0, 0.699);
+    }
+    .detailsBlock-3 {
+        width: auto;
+        margin-bottom: 16px;
+    }
+    .detailsBlock-3 > h1 {
+        font: 700 1.6rem "Franklin Gothic Medium"; /* Adjusted font size */
+    }
+
+    .detailsBlock-3-1-1 > button {
+        font: 400 0.9rem "Roboto";
+        /* Adjusted font size */
+    }
+
+    .detailsBlock-3-1-1 > input {
+        margin: 0 2px;
+        font: 400 0.9rem "Roboto"; /* Adjusted font size */
+    }
+
+    .detailsBlock-3-1 > button:last-child {
+        margin-left: 15px;
+        font: 500 10px "Roboto"; /* Adjusted font size */
+    }
+
+    .detailsBlock-3 > p {
+        font: 400 12px "Roboto"; /* Adjusted font size */
+    }
+
+    .detailsBlock-4 {
+        font: 500 16px sans-serif; /* Adjusted font size */
+    }
+
+    .detailsBlock-4 > p {
+        display: inline;
+        font: 300 12px sans-serif; /* Adjusted font size */
+    }
+
+    .submitReview {
+        margin-top: 10px;
+        font: 500 10px "Roboto"; /* Adjusted font size */
+    }
+
+    .reviewsHeading {
+        font: 500 1.2rem "Roboto"; /* Adjusted font size */
+    }
+
+    .reviewCard > p {
+        font: 600 1.2rem "Roboto"; /* Adjusted font size */
+    }
+
+    .reviewCardComment {
+        font: 300 1rem cursive; /* Adjusted font size */
+    }
+}
 
 @media screen and (max-width: 600px) {
     .ProductDetails {
         flex-direction: column;
         height: unset;
     }
-
+    .ProductDetails > div {
+        align-items: center;
+    }
     .ProductDetails > div:last-child {
         align-items: center;
+        justify-content: center;
     }
 
     .detailsBlock-1 > h2 {

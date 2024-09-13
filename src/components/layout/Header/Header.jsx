@@ -3,7 +3,7 @@ import { ReactNavbar } from "overlay-navbar";
 import { MdAccountCircle } from "react-icons/md";
 import { MdSearch } from "react-icons/md";
 import { MdAddShoppingCart } from "react-icons/md";
-import logo from "../../../images/logo.png";
+import logo from "../../../images/l3.png";
 
 const options = {
     burgerColor: "#808080",

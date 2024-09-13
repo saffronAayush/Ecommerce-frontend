@@ -5,12 +5,9 @@ import ProductCard from "./ProductCard.jsx";
 import MetaData from "../layout/MetaData.jsx";
 import { GetProduct, ClearErrors } from "../../action/ProductAction.js";
 import { useDispatch, useSelector } from "react-redux";
-import ProductLoader from "./ProductLoader.jsx";
-import Loader from "../layout/Loader/Loader.jsx";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import HomeLoad from "./ProductLoaderContainer.jsx";
-
 const Home = () => {
     const dispatch = useDispatch();
     const { products, loading, error } = useSelector(
@@ -22,7 +19,7 @@ const Home = () => {
             toast.error(error);
         }
         dispatch(GetProduct());
-    }, [dispatch, error]);
+    }, []);
 
     window.addEventListener("contextmenu", (e) => e.preventDefault());
     return (
@@ -40,23 +37,22 @@ const Home = () => {
             </div>
 
             <h2 className="homeHeading">Featured Products</h2>
-            <>
-                {loading ? (
-                    <HomeLoad />
-                ) : (
-                    <div className="container" id="container">
-                        {products &&
-                            products.map((product) => {
-                                return (
-                                    <ProductCard
-                                        key={product._id}
-                                        product={product}
-                                    />
-                                );
-                            })}
-                    </div>
-                )}
-            </>
+
+            {loading ? (
+                <HomeLoad />
+            ) : (
+                <div className="container" id="container">
+                    {products &&
+                        products.map((product) => {
+                            return (
+                                <ProductCard
+                                    key={product._id}
+                                    product={product}
+                                />
+                            );
+                        })}
+                </div>
+            )}
         </>
     );
 };

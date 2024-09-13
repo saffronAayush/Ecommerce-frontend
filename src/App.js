@@ -44,7 +44,7 @@ import About from "./components/layout/about/About.jsx";
 import Contact from "./components/layout/contact/Contact.jsx";
 import NotFound from "./components/layout/notFound/NotFound.jsx";
 import { useLocation } from "react-router-dom";
-
+import NetworkStatus from "./NetworkStatus.jsx";
 const ScrollToTop = () => {
     const { pathname } = useLocation();
 
@@ -76,103 +76,116 @@ function App() {
 
     return (
         <>
-            <Router>
-                <ScrollToTop />
-                <Header />
-                {isAuthenticated && <UserOptions user={LogedUser} />}
-                <Elements stripe={loadStripe(stripeApiKey)}>
-                    <Routes>
-                        <Route element={<ProtectedRoute />}>
+            <NetworkStatus>
+                <Router>
+                    <ScrollToTop />
+                    <Header />
+                    {isAuthenticated && <UserOptions user={LogedUser} />}
+                    <Elements stripe={loadStripe(stripeApiKey)}>
+                        <Routes>
+                            <Route element={<ProtectedRoute />}>
+                                <Route
+                                    path="/process/payment"
+                                    element={<Payment />}
+                                />
+                            </Route>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/about" element={<About />} />
+                            <Route path="/contact" element={<Contact />} />
                             <Route
-                                path="/process/payment"
-                                element={<Payment />}
+                                path="/product/:id"
+                                element={<ProductDetails />}
                             />
-                        </Route>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/about" element={<About />} />
-                        <Route path="/contact" element={<Contact />} />
-                        <Route
-                            path="/product/:id"
-                            element={<ProductDetails />}
-                        />
-                        <Route path="/products" element={<Products />} />
-                        <Route
-                            path="/products/:keyword"
-                            element={<Products />}
-                        />
-                        <Route path="/search" element={<Search />} />
-                        <Route path="/login" element={<LoginSignup />} />
-                        <Route path="/cart" element={<Cart />} />
-                        <Route
-                            path="/password/forgot"
-                            element={<ForgotPassword />}
-                        />
-                        <Route
-                            path="/password/reset/:token"
-                            element={<ResetPassword />}
-                        />
-                        <Route element={<ProtectedRoute />}>
-                            <Route path="/account" element={<Profile />} />
-                            <Route path="/shipping" element={<Shipping />} />
+                            <Route path="/products" element={<Products />} />
                             <Route
-                                path="/me/update"
-                                element={<Update_profile />}
+                                path="/products/:keyword"
+                                element={<Products />}
+                            />
+                            <Route path="/search" element={<Search />} />
+                            <Route path="/login" element={<LoginSignup />} />
+                            <Route path="/cart" element={<Cart />} />
+                            <Route
+                                path="/password/forgot"
+                                element={<ForgotPassword />}
                             />
                             <Route
-                                path="/password/update"
-                                element={<UpdatePassword />}
+                                path="/password/reset/:token"
+                                element={<ResetPassword />}
                             />
+                            <Route element={<ProtectedRoute />}>
+                                <Route path="/account" element={<Profile />} />
+                                <Route
+                                    path="/shipping"
+                                    element={<Shipping />}
+                                />
+                                <Route
+                                    path="/me/update"
+                                    element={<Update_profile />}
+                                />
+                                <Route
+                                    path="/password/update"
+                                    element={<UpdatePassword />}
+                                />
+                                <Route
+                                    path="/order/confirm"
+                                    element={<ConfirmOrder />}
+                                />
+                                <Route
+                                    path="/success"
+                                    element={<OrderSuccess />}
+                                />
+                                <Route path="/orders" element={<MyOrders />} />
+                                <Route
+                                    path="/order/:id"
+                                    element={<OrderDetails />}
+                                />
+                            </Route>
                             <Route
-                                path="/order/confirm"
-                                element={<ConfirmOrder />}
-                            />
-                            <Route path="/success" element={<OrderSuccess />} />
-                            <Route path="/orders" element={<MyOrders />} />
-                            <Route
-                                path="/order/:id"
-                                element={<OrderDetails />}
-                            />
-                        </Route>
-                        <Route element={<ProtectedRoute admin={LogedUser} />}>
-                            <Route
-                                path="/admin/dashboard"
-                                element={<Dashboard />}
-                            />
-                            <Route
-                                path="/admin/products"
-                                element={<ProductList />}
-                            />
-                            <Route
-                                path="/admin/product"
-                                element={<NewProduct />}
-                            />
-                            <Route
-                                path="/admin/product/:id"
-                                element={<UpdateProduct />}
-                            />
-                            <Route
-                                path="/admin/orders"
-                                element={<OrderList />}
-                            />
-                            <Route
-                                path="/admin/order/:id"
-                                element={<ProcessOrder />}
-                            />
-                            <Route path="/admin/users" element={<UserList />} />
-                            <Route
-                                path="/admin/user/:id"
-                                element={<UserUpdate />}
-                            />
-                            <Route
-                                path="/admin/reviews"
-                                element={<ProductReviews />}
-                            />
-                        </Route>
-                        <Route path="*" element={<NotFound />} />
-                    </Routes>
-                </Elements>
-                <Footer />
-            </Router>
+                                element={<ProtectedRoute admin={LogedUser} />}
+                            >
+                                <Route
+                                    path="/admin/dashboard"
+                                    element={<Dashboard />}
+                                />
+                                <Route
+                                    path="/admin/products"
+                                    element={<ProductList />}
+                                />
+                                <Route
+                                    path="/admin/product"
+                                    element={<NewProduct />}
+                                />
+                                <Route
+                                    path="/admin/product/:id"
+                                    element={<UpdateProduct />}
+                                />
+                                <Route
+                                    path="/admin/orders"
+                                    element={<OrderList />}
+                                />
+                                <Route
+                                    path="/admin/order/:id"
+                                    element={<ProcessOrder />}
+                                />
+                                <Route
+                                    path="/admin/users"
+                                    element={<UserList />}
+                                />
+                                <Route
+                                    path="/admin/user/:id"
+                                    element={<UserUpdate />}
+                                />
+                                <Route
+                                    path="/admin/reviews"
+                                    element={<ProductReviews />}
+                                />
+                            </Route>
+                            <Route path="*" element={<NotFound />} />
+                        </Routes>
+                    </Elements>
+                    <Footer />
+                </Router>
+            </NetworkStatus>
         </>
     );
 }
